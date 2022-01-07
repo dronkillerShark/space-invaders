@@ -31,7 +31,7 @@ def game():
     score = 0
 
     font = pygame.font.Font('fonts/PressStart2P-Regular.ttf', 32)
-    level_of_the_game = 5
+    level_of_the_game = 1
     run = True
 
     def isCollide(x, y, x2, y2, width, height, width2, height2):
@@ -52,15 +52,15 @@ def game():
             if not x <= 0:
                 if not move_bullet:
                     bulletX -= 3
-                x -= 5
+                x -= 3
         if key_pressed[pygame.K_RIGHT]:
             if not x >= 440:
                 if not move_bullet:
                     bulletX += 3
-                x += 5
+                x += 3
         if move_bullet and bulletY >= 0:
             if isCollide(bulletX, bulletY, alienX, alienY, 8, 16, 64, 64):
-                level_of_the_game += 1
+                level_of_the_game += 0.2
                 score += 1
                 hide = True
                 alienX = 230
@@ -73,7 +73,7 @@ def game():
             bulletX = x + 30
         if not alienX <= 0 and not to_right:
             to_right = False
-            alienX -= 5
+            alienX -= level_of_the_game
         elif alienX <= 0:
             alienY += 20
             to_right = True
