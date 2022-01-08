@@ -84,6 +84,9 @@ def game():
             alienY += 20
             to_right = False
         if isCollide(x, y, alienX, alienY, 64, 64, 64, 64):
+            mixer.music.load("sound/invaderkilled.wav")
+            mixer.music.set_volume(1)
+            mixer.music.play()
             sleep(2)
             run = False
 
@@ -101,4 +104,4 @@ def game():
         pygame.display.flip()
 
 if __name__ == "__main__":
-    game()
+    print("please run the main menu file!")
