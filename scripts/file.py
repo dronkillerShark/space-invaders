@@ -1,6 +1,8 @@
-def game():
+def game(Spaceship):
+    import sqlite3
     import pygame
     from pygame import mixer
+    from mainMenu import mainMenu
     from time import sleep
 
     pygame.init()
@@ -9,6 +11,19 @@ def game():
     height = 700
     width = 500
     move_bullet = False
+
+    def updateMoney(score):
+            con = sqlite3.connect('data.db')
+            cur = con.cursor()
+            cur.execute("Select * from mn")
+            data = cur.fetchall()
+            for row in data:
+                    cur.execute('''
+                UPDATE mn
+                SET money =  
+            ''' + str(int(row[0]) + score))
+            con.commit()
+            con.close()
 
     x = 230
     y = 500
@@ -19,10 +34,9 @@ def game():
     alienX = 230
     alienY = 100
     hide = False
-
-    isDown = False
+    
     laser_bullet = pygame.image.load("img/laser_bullet.png")
-    space_ship = pygame.image.load("img/spaceship.png")
+    space_ship = pygame.image.load(Spaceship)
     to_right = False
 
     background = pygame.image.load("img/background.jpg")
@@ -41,6 +55,9 @@ def game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                updateMoney(score)
+                mainMenu()
+                quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and not move_bullet:
                         mixer.music.load("sound/laser-shoot.wav")
@@ -88,7 +105,10 @@ def game():
             mixer.music.set_volume(1)
             mixer.music.play()
             sleep(2)
+            updateMoney(score)
             run = False
+            mainMenu()
+            quit()
 
         screen.blit(background, (0, 0))
         screen.blit(laser_bullet, (bulletX, bulletY))
